@@ -54,6 +54,7 @@ app.post('/add-form',async (req,res)=>{
         })
         const savedForm=await form.save()
         const subscribers=await Subscribe.find({})
+        console.log("------"),subscribers;
         for(let i=0;i<subscribers.length;i++){
             await fetch("https://fcm.googleapis.com/fcm/send",{
                 method:'post',
