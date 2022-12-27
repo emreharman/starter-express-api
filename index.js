@@ -54,8 +54,7 @@ app.post("/add-form", async (req, res) => {
     const savedForm = await form.save();
     const subscribers = await Subscribe.find({});
     console.log("------"), subscribers;
-    for (let i = 0; i < subscribers.length; i++) {
-      var myHeaders = new Headers();
+    var myHeaders = new Headers();
       myHeaders.append(
         "Authorization",
         "key=AAAARd-8OUQ:APA91bF-CNlLU1CRXFSDegNTyRZmtcANZlXDxNyXyW-o1f4yphd936Il7xCakkvuo4uOepUe6CDnN6HO44-_B4ROUyAcKKcXS5iDB_VVj5wgR-7Bm8XS_6Xk1uSqjG6pz32Od9fdQqif"
@@ -68,7 +67,7 @@ app.post("/add-form", async (req, res) => {
           body: "test test test",
           title: "test",
         },
-        to: subscribers[i]
+        to: "dKF6Qt4GQMiab_lHaRgBz0:APA91bELXcildLhCgbbHI78sk53bi3eXF9GCHVdCSIXMrcPoh6dpFDcvo5aveW66BFFm9d3MMAo4yk1j83JLvyeLxsvQgEvnEZ_0omY09hGviCdjE-Gdcx3WTfQZlLzTk8b_VOiFDFhk",
       });
 
       var requestOptions = {
@@ -82,7 +81,6 @@ app.post("/add-form", async (req, res) => {
         .then((response) => response.text())
         .then((result) => console.log(result))
         .catch((error) => console.log("error", error));
-    }
     res.json({ status: 200, message: "Form başarıyla gönderildi", savedForm });
   } catch (error) {
     console.log(error);
