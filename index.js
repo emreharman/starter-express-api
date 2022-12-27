@@ -5,6 +5,7 @@ const dotenv=require("dotenv")
 dotenv.config()
 const cors=require('cors')
 const Form = require('./models/Form')
+const Subscribe=require("./models/Subscribers")
 const PORT = process.env.PORT || 3004
 
 
@@ -53,6 +54,20 @@ app.post('/add-form',async (req,res)=>{
         })
         const savedForm=await form.save()
         res.json({status:200,message:'Form başarıyla gönderildi',savedForm})
+    } catch (error) {
+        console.log(error)
+        res.json({status:500,message:"Server'da bir hata oluştu"})
+    }
+})
+
+app.post('/add-subscriber',async (req,res)=>{
+    try {
+        const {body}=req
+        const subscribe=new Subscribe({
+            token: body.token
+        })
+        const saved=await subscribe.save()
+        res.json({status:200,message:'Başarıyla eklendi',saved})
     } catch (error) {
         console.log(error)
         res.json({status:500,message:"Server'da bir hata oluştu"})
