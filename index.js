@@ -7,6 +7,7 @@ const cors = require("cors");
 const Form = require("./models/Form");
 const Subscribe = require("./models/Subscribers");
 const PORT = process.env.PORT || 3004;
+const http=require("http")
 
 //connect db
 mongoose.connect(
@@ -54,33 +55,27 @@ app.post("/add-form", async (req, res) => {
     const savedForm = await form.save();
     const subscribers = await Subscribe.find({});
     console.log("------"), subscribers;
-    var myHeaders = new Headers();
-      myHeaders.append(
-        "Authorization",
-        "key=AAAARd-8OUQ:APA91bF-CNlLU1CRXFSDegNTyRZmtcANZlXDxNyXyW-o1f4yphd936Il7xCakkvuo4uOepUe6CDnN6HO44-_B4ROUyAcKKcXS5iDB_VVj5wgR-7Bm8XS_6Xk1uSqjG6pz32Od9fdQqif"
-      );
-      myHeaders.append("Content-Type", "application/json");
-
-      var raw = JSON.stringify({
-        data: {},
-        notification: {
-          body: "test test test",
-          title: "test",
+    var options = {
+        'method': 'POST',
+        'url': 'https://fcm.googleapis.com/fcm/send',
+        'headers': {
+          'Authorization': 'key=AAAARd-8OUQ:APA91bF-CNlLU1CRXFSDegNTyRZmtcANZlXDxNyXyW-o1f4yphd936Il7xCakkvuo4uOepUe6CDnN6HO44-_B4ROUyAcKKcXS5iDB_VVj5wgR-7Bm8XS_6Xk1uSqjG6pz32Od9fdQqif',
+          'Content-Type': 'application/json'
         },
-        to: "dKF6Qt4GQMiab_lHaRgBz0:APA91bELXcildLhCgbbHI78sk53bi3eXF9GCHVdCSIXMrcPoh6dpFDcvo5aveW66BFFm9d3MMAo4yk1j83JLvyeLxsvQgEvnEZ_0omY09hGviCdjE-Gdcx3WTfQZlLzTk8b_VOiFDFhk",
-      });
-
-      var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-        redirect: "follow",
+        body: JSON.stringify({
+          "data": {},
+          "notification": {
+            "body": "test test test",
+            "title": "test"
+          },
+          "to": "dKF6Qt4GQMiab_lHaRgBz0:APA91bELXcildLhCgbbHI78sk53bi3eXF9GCHVdCSIXMrcPoh6dpFDcvo5aveW66BFFm9d3MMAo4yk1j83JLvyeLxsvQgEvnEZ_0omY09hGviCdjE-Gdcx3WTfQZlLzTk8b_VOiFDFhk"
+        })
+      
       };
-
-      fetch("https://fcm.googleapis.com/fcm/send", requestOptions)
-        .then((response) => response.text())
-        .then((result) => console.log(result))
-        .catch((error) => console.log("error", error));
+      http.request(options, function (error, response) {
+        if (error) throw new Error(error);
+        console.log(response.body);
+      });
     res.json({ status: 200, message: "Form başarıyla gönderildi", savedForm });
   } catch (error) {
     console.log(error);
