@@ -53,6 +53,24 @@ app.post('/add-form',async (req,res)=>{
             date:body.date
         })
         const savedForm=await form.save()
+        const subscribers=await Subscribe.find({})
+        for(let i=0;i<subscribers.length;i++){
+            await fetch("https://fcm.googleapis.com/fcm/send",{
+                method:'post',
+                headers:{
+                    Authorization: "key=BEvtrRwzcx2777FU7V1Q8c0IsNy8BAP0tTnO8-cT5PP7Nai_bbPN-cYrdFnitvlsfYnd0P7L6XWepU1erI8Fdwg",
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    data:{},
+                    notification:{
+                        title:"Yeni Mesaj",
+                        body:"Yeni bir mesajınız var. Okumak için uygulamaya girin."
+                    },
+                    to:subscribers[i]
+                })
+            })
+        }
         res.json({status:200,message:'Form başarıyla gönderildi',savedForm})
     } catch (error) {
         console.log(error)
