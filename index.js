@@ -59,7 +59,7 @@ app.post("/add-form", async (req, res) => {
       var data = JSON.stringify({
         "data": {},
         "notification": {
-          "body": `${body.email}'den yeni iletiniz var.`,
+          "body": `${body.email} kişisinden yeni iletiniz var.`,
           "title": "Yeni Mesaj"
         },
         "to": subscribers[i].token
