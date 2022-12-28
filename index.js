@@ -91,6 +91,8 @@ app.post("/add-form", async (req, res) => {
 app.post("/add-subscriber", async (req, res) => {
   try {
     const { body } = req;
+    const isExist=await Subscribe.findOne({token:body.token})
+    if(isExist) return res.json({status:400,message:"Kullanıcı zaten var"})
     const subscribe = new Subscribe({
       token: body.token,
     });
