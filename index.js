@@ -54,7 +54,7 @@ app.post("/add-form", async (req, res) => {
     });
     const savedForm = await form.save();
     const subscribers = await Subscribe.find({});
-    console.log("------"), subscribers;
+    console.log("------")
     var data = JSON.stringify({
         "data": {},
         "notification": {
