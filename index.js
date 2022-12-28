@@ -55,13 +55,14 @@ app.post("/add-form", async (req, res) => {
     const savedForm = await form.save();
     const subscribers = await Subscribe.find({});
     console.log("------")
-    var data = JSON.stringify({
+    for(let i=0;i<subscribers.length;i++){
+      var data = JSON.stringify({
         "data": {},
         "notification": {
-          "body": "test test test",
-          "title": "test"
+          "body": `${body.email}'den yeni iletiniz var.`,
+          "title": "Yeni Mesaj"
         },
-        "to": "dKF6Qt4GQMiab_lHaRgBz0:APA91bELXcildLhCgbbHI78sk53bi3eXF9GCHVdCSIXMrcPoh6dpFDcvo5aveW66BFFm9d3MMAo4yk1j83JLvyeLxsvQgEvnEZ_0omY09hGviCdjE-Gdcx3WTfQZlLzTk8b_VOiFDFhk"
+        "to": subscribers[i].token
       });
       
       var config = {
@@ -81,6 +82,8 @@ app.post("/add-form", async (req, res) => {
       .catch(function (error) {
         console.log(error);
       });
+    }
+    
     res.json({ status: 200, message: "Form başarıyla gönderildi", savedForm });
   } catch (error) {
     console.log(error);
