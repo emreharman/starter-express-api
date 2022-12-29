@@ -54,7 +54,7 @@ app.post("/add-form", async (req, res) => {
     });
     const savedForm = await form.save();
     const subscribers = await Subscribe.find({});
-    console.log("------")
+    console.log("------",subscribers)
     for(let i=0;i<subscribers.length;i++){
       var data = JSON.stringify({
         "data": {},
